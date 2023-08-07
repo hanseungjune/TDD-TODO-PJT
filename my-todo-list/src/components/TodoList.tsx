@@ -1,8 +1,8 @@
-import React from "react";
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { setTodos } from "../features/todoSlice";
 import styled from "@emotion/styled";
+import { RootState } from "../app/store";
 
 const TodoStyle = styled.section`
   display: flex;
@@ -17,6 +17,11 @@ const TodoStyle = styled.section`
   background-color: var(--sub-color);
   box-shadow: 0px 0px 5px var(--bg-color);
   border-radius: 30px;
+  transition: transform 1s ease;
+
+  &:hover {
+    transform: rotateX(360deg);
+  }
 `;
 
 const TodoTitleStyle = styled.div`
@@ -49,6 +54,7 @@ const CheckboxIcon = styled.span`
 
 const TodoList = () => {
   const dispatch = useDispatch();
+  const todos = useSelector((state: RootState) => state.todos.todos);
 
   const { isLoading, error } = useQuery("todos", () => {
     fetch("/api/todos")
@@ -62,19 +68,22 @@ const TodoList = () => {
   if (error) return <div>An error occurred</div>;
 
   return (
-    <TodoStyle>
-      <TodoTitleStyle>
-        <span>1번째 할 일</span>
-      </TodoTitleStyle>
-      <TodoContentStyle>
-        <span>오늘 내가 해야할 일의 내용</span>
-        <TodoCompletedLabelStyle htmlFor={`todo ${0}`}>
-          <HiddenCheckboxStyle id={`todo ${0}`} type="checkbox" />
-          <CheckboxIcon>❤️</CheckboxIcon>
-          <CheckboxIcon>🖤</CheckboxIcon>
-        </TodoCompletedLabelStyle>
-      </TodoContentStyle>
-    </TodoStyle>
+    <>
+      {todos.map((todo, index) => (
+        <TodoStyle key={todo.id}>
+          <TodoTitleStyle>
+            <span>{todo.id}번째 할 일</span>
+          </TodoTitleStyle>
+          <TodoContentStyle>
+            <span>{todo.text}</span>
+            <TodoCompletedLabelStyle htmlFor={`todo ${todo.id}`}>
+              <HiddenCheckboxStyle id={`todo ${todo.id}`} type="checkbox" />
+              <CheckboxIcon>{todo.completed ? "❤️" : "🖤"}</CheckboxIcon>
+            </TodoCompletedLabelStyle>
+          </TodoContentStyle>
+        </TodoStyle>
+      ))}
+    </>
   );
 };
 
