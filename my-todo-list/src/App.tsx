@@ -11,6 +11,7 @@ function App() {
             --bg-color: #f6f4eb;
             --main-color: #91c8e4;
             --sub-color: #4682a9;
+            --section-color: #749BC2;
             --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
               "Helvetica Neue", Arial;
           }
