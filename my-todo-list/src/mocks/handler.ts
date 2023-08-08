@@ -6,6 +6,7 @@ let todos = [
   { id: 3, text: "CS 스터디 준비 하기", completed: false },
   { id: 4, text: "구현 테스트 강의 듣기", completed: false },
   { id: 5, text: "투두 리스트 프로젝트 완성하기", completed: false },
+  { id: 6, text: "1만보 걷기", completed: false },
 ];
 
 export const handlers = [

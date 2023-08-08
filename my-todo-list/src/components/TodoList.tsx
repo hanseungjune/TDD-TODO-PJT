@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
-import { setTodos } from "../features/todoSlice";
+import { setTodos, toggleSelectTodo } from "../features/todoSlice";
 import styled from "@emotion/styled";
 import { RootState } from "../app/store";
 
@@ -52,9 +52,22 @@ const CheckboxIcon = styled.span`
   font-size: 1.5rem;
 `;
 
+const SelectedTodosStyle = styled.div`
+  position: fixed;
+  padding: 20px;
+  width: 350px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 5px var(--main-color);
+  top: 50px;
+  right: 50px;
+`;
+
 const TodoList = () => {
   const dispatch = useDispatch();
   const todos = useSelector((state: RootState) => state.todos.todos);
+  const selectedTodos = useSelector(
+    (state: RootState) => state.todos.selectedTodos
+  );
 
   const { isLoading, error } = useQuery("todos", () => {
     fetch("/api/todos")
@@ -67,10 +80,21 @@ const TodoList = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error occurred</div>;
 
+  const handleToggleSelectTodo = (id: number) => {
+    dispatch(toggleSelectTodo(id));
+  };
+
+  const selectedTodosText = selectedTodos.map(
+    (todoId) => todos.find((todo) => todo.id === todoId)?.text
+  );
+
   return (
     <>
       {todos.map((todo, index) => (
-        <TodoStyle key={todo.id}>
+        <TodoStyle
+          key={todo.id}
+          onClick={() => handleToggleSelectTodo(todo.id)}
+        >
           <TodoTitleStyle>
             <span>{todo.id}번째 할 일</span>
           </TodoTitleStyle>
@@ -83,6 +107,14 @@ const TodoList = () => {
           </TodoContentStyle>
         </TodoStyle>
       ))}
+      <SelectedTodosStyle>
+        <h3>Selected TodoList</h3>
+        <ul>
+          {selectedTodosText.map((todoText, index) => (
+            <li key={index}>{todoText}</li>
+          ))}
+        </ul>
+      </SelectedTodosStyle>
     </>
   );
 };
