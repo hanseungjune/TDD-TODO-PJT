@@ -44,4 +44,18 @@ export const handlers = [
       return res(ctx.status(404), ctx.json({ error: "삭제가 되지 않네요" }));
     }
   }),
+  rest.patch("api/todos/:id/completed", (req, res, ctx) => {
+    const id = Number(req.params.id);
+    const { completed } = req.body as { completed: boolean };
+    const todoIndex = todos.findIndex((todo) => todo.id === id);
+    if (todoIndex !== -1) {
+      todos[todoIndex].completed = completed;
+      return res(ctx.status(200), ctx.json(todos[todoIndex]));
+    } else {
+      return res(
+        ctx.status(404),
+        ctx.json({ error: "완료 상태를 업데이트할 수 없습니다" })
+      );
+    }
+  }),
 ];

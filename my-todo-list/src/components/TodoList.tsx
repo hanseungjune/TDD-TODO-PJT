@@ -1,8 +1,10 @@
-import { useQuery } from "react-query";
+import { useQueryClient, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setInputValue,
   setTodos,
+  toggleCompleted,
   toggleSelectTodo,
 } from "../features/todoSlice";
 import styled from "@emotion/styled";
@@ -47,12 +49,15 @@ const TodoStyle = styled.section<{ selected: boolean }>`
     selected ? "var(--bg-color)" : "var(--sub-color)"};
   color: ${({ selected }) =>
     selected ? "var(--sub-color)" : "var(--bg-color)"};
-  box-shadow: 0px 0px 5px var(--bg-color);
+  box-shadow: ${({ selected }) =>
+    selected ? "0px 0px 5px var(--sub-color)" : "0px 0px 5px var(--bg-color)"};
   border-radius: 30px;
-  transition: transform 1s ease;
+  transition: transform 0.5s ease, background-color 0.5s ease, color 0.5s ease;
 
   &:hover {
-    transform: rotateX(360deg);
+    transform: scale(1.05);
+    background-color: black;
+    color: white;
   }
 `;
 
@@ -82,7 +87,13 @@ const CheckboxIcon = styled.span`
   font-size: 1.5rem;
 `;
 
+type ToggleCompletedResponse = {
+  todoId: number;
+  completed: boolean;
+};
+
 const TodoList = () => {
+  const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const todos = useSelector((state: RootState) => state.todos.todos);
   const selectedTodos = useSelector(
@@ -102,12 +113,36 @@ const TodoList = () => {
       });
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>An error occurred</div>;
-
   const handleToggleSelectTodo = (id: number) => {
     dispatch(toggleSelectTodo(id));
   };
+
+  const toggleCompletedMutation = useMutation(
+    ({ todoId, completed }: { todoId: number; completed: boolean }) =>
+      fetch(`/api/todos/${todoId}/completed`, {
+        method: "PATCH",
+        body: JSON.stringify({ completed }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => res.json()), // 응답을 JSON으로 파싱
+    {
+      onSuccess: (data: ToggleCompletedResponse) => {
+        // 타입을 지정
+        dispatch(
+          toggleCompleted({ todoId: data.todoId, completed: data.completed })
+        );
+        queryClient.invalidateQueries("todos");
+      },
+    }
+  );
+
+  const handleToggleCompleted = (todoId: number, completed: boolean) => {
+    toggleCompletedMutation.mutate({ todoId, completed });
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred</div>;
 
   return (
     <>
@@ -127,7 +162,11 @@ const TodoList = () => {
             <span>{todo.text}</span>
             <TodoCompletedLabelStyle htmlFor={`todo ${todo.id}`}>
               <HiddenCheckboxStyle id={`todo ${todo.id}`} type="checkbox" />
-              <CheckboxIcon>{todo.completed ? "❤️" : "🖤"}</CheckboxIcon>
+              <CheckboxIcon
+                onClick={() => handleToggleCompleted(todo.id, !todo.completed)}
+              >
+                {todo.completed ? "❤️" : "🖤"}
+              </CheckboxIcon>
             </TodoCompletedLabelStyle>
           </TodoContentStyle>
         </TodoStyle>

@@ -57,6 +57,17 @@ export const todoReducer = createSlice({
     setInputValue: (state, action: PayloadAction<string>) => {
       state.inputValue = action.payload;
     },
+    toggleCompleted: (
+      state,
+      action: PayloadAction<{ todoId: number; completed: boolean }>
+    ) => {
+      const todo = state.todos.find(
+        (todo) => todo.id === action.payload.todoId
+      );
+      if (todo) {
+        todo.completed = action.payload.completed;
+      }
+    },
   },
 });
 
@@ -67,6 +78,7 @@ export const {
   deleteTodo,
   toggleSelectTodo,
   setInputValue,
+  toggleCompleted,
 } = todoReducer.actions;
 
 export default todoReducer.reducer;
