@@ -19,7 +19,7 @@ export const handlers = [
     todos.push(todo);
     return res(ctx.json(todo));
   }),
-  rest.put("api/todos/:id", (req, res, ctx) => {
+  rest.patch("api/todos/:id", (req, res, ctx) => {
     const id = Number(req.params.id);
     const updatedTodo = req.body as {
       id: number;

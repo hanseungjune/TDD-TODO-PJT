@@ -2,7 +2,12 @@ import styled from "@emotion/styled";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../app/store";
 import { useMutation } from "react-query";
-import { addTodo, deleteTodo, setInputValue } from "../features/todoSlice";
+import {
+  addTodo,
+  deleteTodo,
+  setInputValue,
+  updatedTodo,
+} from "../features/todoSlice";
 
 const TodoCommandSectionStyle = styled.section`
   width: 99%;
@@ -123,6 +128,31 @@ const TodoCommand = () => {
     mutation.mutate(newTodo);
   };
 
+  const updateTodoMutation = useMutation(
+    (updatedTodo: Todo) =>
+      fetch(`api/todos/${updatedTodo.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTodo),
+      }).then((res) => res.json()),
+    {
+      onSuccess: (data) => {
+        dispatch(updatedTodo(data));
+      },
+    }
+  );
+
+  const handleUpdateTodo = () => {
+    const selectedTodoId = selectedTodos[0];
+    const selectedTodo = todos.find((todo) => todo.id === selectedTodoId);
+    if (selectedTodo) {
+      const updatedTodo = { ...selectedTodo, text: inputValue };
+      updateTodoMutation.mutate(updatedTodo);
+    }
+  };
+
   return (
     <TodoCommandSectionStyle>
       <TodoCommandProfileStyle>
@@ -134,7 +164,9 @@ const TodoCommand = () => {
       <TodoCommandCUDStyle onClick={handleAddTodo}>
         일정 추가
       </TodoCommandCUDStyle>
-      <TodoCommandCUDStyle>일정 수정</TodoCommandCUDStyle>
+      <TodoCommandCUDStyle onClick={handleUpdateTodo}>
+        일정 수정
+      </TodoCommandCUDStyle>
       <TodoCommandCUDStyle onClick={handleDeleteSelectedTodos}>
         일정 취소
       </TodoCommandCUDStyle>
