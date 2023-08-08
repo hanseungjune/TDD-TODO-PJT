@@ -1,10 +1,39 @@
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
-import { setTodos, toggleSelectTodo } from "../features/todoSlice";
+import {
+  setInputValue,
+  setTodos,
+  toggleSelectTodo,
+} from "../features/todoSlice";
 import styled from "@emotion/styled";
 import { RootState } from "../app/store";
 
-const TodoStyle = styled.section`
+const TodoInputStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  margin: 20px;
+  width: 40rem;
+  height: 10%;
+  background-color: var(--bg-color);
+  box-shadow: 0px 0px 5px var(--sub-color);
+  border-radius: 30px;
+  transition: transform 1s ease;
+
+  & > input {
+    width: 37.7rem;
+    height: 100%;
+    outline: none;
+    border: none;
+    border-radius: 30px;
+    padding-left: 2rem;
+    font-size: 1.3rem;
+    font-weight: 900;
+  }
+`;
+
+const TodoStyle = styled.section<{ selected: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,7 +43,10 @@ const TodoStyle = styled.section`
   margin: 20px;
   width: calc(100% - 60px);
   height: 20%;
-  background-color: var(--sub-color);
+  background-color: ${({ selected }) =>
+    selected ? "var(--bg-color)" : "var(--sub-color)"};
+  color: ${({ selected }) =>
+    selected ? "var(--sub-color)" : "var(--bg-color)"};
   box-shadow: 0px 0px 5px var(--bg-color);
   border-radius: 30px;
   transition: transform 1s ease;
@@ -25,13 +57,11 @@ const TodoStyle = styled.section`
 `;
 
 const TodoTitleStyle = styled.div`
-  color: var(--bg-color);
   font-size: 0.8rem;
   font-weight: bold;
 `;
 
 const TodoContentStyle = styled.div`
-  color: var(--bg-color);
   font-size: 1.5rem;
   font-weight: 600;
   width: calc(100% - 10px);
@@ -52,22 +82,17 @@ const CheckboxIcon = styled.span`
   font-size: 1.5rem;
 `;
 
-const SelectedTodosStyle = styled.div`
-  position: fixed;
-  padding: 20px;
-  width: 350px;
-  border-radius: 30px;
-  box-shadow: 0px 0px 5px var(--main-color);
-  top: 50px;
-  right: 50px;
-`;
-
 const TodoList = () => {
   const dispatch = useDispatch();
   const todos = useSelector((state: RootState) => state.todos.todos);
   const selectedTodos = useSelector(
     (state: RootState) => state.todos.selectedTodos
   );
+  const inputValue = useSelector((state: RootState) => state.todos.inputValue);
+
+  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setInputValue(event.target.value));
+  };
 
   const { isLoading, error } = useQuery("todos", () => {
     fetch("/api/todos")
@@ -84,15 +109,15 @@ const TodoList = () => {
     dispatch(toggleSelectTodo(id));
   };
 
-  const selectedTodosText = selectedTodos.map(
-    (todoId) => todos.find((todo) => todo.id === todoId)?.text
-  );
-
   return (
     <>
-      {todos.map((todo, index) => (
+      <TodoInputStyle>
+        <input type="text" value={inputValue} onChange={handleChangeInput} />
+      </TodoInputStyle>
+      {todos.map((todo) => (
         <TodoStyle
           key={todo.id}
+          selected={selectedTodos.includes(todo.id)}
           onClick={() => handleToggleSelectTodo(todo.id)}
         >
           <TodoTitleStyle>
@@ -107,14 +132,6 @@ const TodoList = () => {
           </TodoContentStyle>
         </TodoStyle>
       ))}
-      <SelectedTodosStyle>
-        <h3>Selected TodoList</h3>
-        <ul>
-          {selectedTodosText.map((todoText, index) => (
-            <li key={index}>{todoText}</li>
-          ))}
-        </ul>
-      </SelectedTodosStyle>
     </>
   );
 };

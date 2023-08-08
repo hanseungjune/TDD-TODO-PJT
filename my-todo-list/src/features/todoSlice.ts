@@ -9,11 +9,13 @@ interface Todo {
 interface TodoState {
   todos: Todo[];
   selectedTodos: number[];
+  inputValue: string;
 }
 
 const initialState: TodoState = {
   todos: [],
   selectedTodos: [],
+  inputValue: "",
 };
 
 export const todoReducer = createSlice({
@@ -52,10 +54,19 @@ export const todoReducer = createSlice({
         state.selectedTodos.push(id);
       }
     },
+    setInputValue: (state, action: PayloadAction<string>) => {
+      state.inputValue = action.payload;
+    },
   },
 });
 
-export const { setTodos, addTodo, updatedTodo, deleteTodo, toggleSelectTodo } =
-  todoReducer.actions;
+export const {
+  setTodos,
+  addTodo,
+  updatedTodo,
+  deleteTodo,
+  toggleSelectTodo,
+  setInputValue,
+} = todoReducer.actions;
 
 export default todoReducer.reducer;

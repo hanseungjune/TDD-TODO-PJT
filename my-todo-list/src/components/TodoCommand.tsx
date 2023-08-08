@@ -1,4 +1,8 @@
 import styled from "@emotion/styled";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../app/store";
+import { useMutation } from "react-query";
+import { addTodo, deleteTodo, setInputValue } from "../features/todoSlice";
 
 const TodoCommandSectionStyle = styled.section`
   width: 99%;
@@ -50,9 +54,74 @@ const TodoCommandCUDStyle = styled.button`
   }
 `;
 
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
 const TodoCommand = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector((state: RootState) => state.todos.todos);
+  const inputValue = useSelector((state: RootState) => state.todos.inputValue);
 
+  const selectedTodos = useSelector(
+    (state: RootState) => state.todos.selectedTodos
+  );
 
+  const deleteTodosMutation = useMutation(
+    (todoIds: number[]) =>
+      Promise.all(
+        todoIds.map((id) =>
+          fetch(`api/todos/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }).then((res) => res.json())
+        )
+      ),
+    {
+      onSuccess: (_, variables) => {
+        variables.forEach((todoId: number) => {
+          dispatch(deleteTodo(todoId));
+        });
+      },
+    }
+  );
+
+  const handleDeleteSelectedTodos = () => {
+    deleteTodosMutation.mutate(selectedTodos);
+  };
+
+  const mutation = useMutation(
+    async (newTodo: Todo) => {
+      const response = await fetch("api/todos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newTodo),
+      });
+
+      return response.json();
+    },
+    {
+      onSuccess: (data) => {
+        dispatch(addTodo(data));
+        dispatch(setInputValue(""));
+      },
+    }
+  );
+
+  const handleAddTodo = () => {
+    const newTodo = {
+      id: todos.length,
+      text: inputValue,
+      completed: false,
+    };
+    mutation.mutate(newTodo);
+  };
 
   return (
     <TodoCommandSectionStyle>
@@ -62,9 +131,13 @@ const TodoCommand = () => {
           alt={"profile"}
         />
       </TodoCommandProfileStyle>
-      <TodoCommandCUDStyle>일정 추가</TodoCommandCUDStyle>
+      <TodoCommandCUDStyle onClick={handleAddTodo}>
+        일정 추가
+      </TodoCommandCUDStyle>
       <TodoCommandCUDStyle>일정 수정</TodoCommandCUDStyle>
-      <TodoCommandCUDStyle>일정 취소</TodoCommandCUDStyle>
+      <TodoCommandCUDStyle onClick={handleDeleteSelectedTodos}>
+        일정 취소
+      </TodoCommandCUDStyle>
     </TodoCommandSectionStyle>
   );
 };
