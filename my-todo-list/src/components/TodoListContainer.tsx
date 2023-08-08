@@ -25,6 +25,7 @@ const TodoListStyle = styled.article`
   overflow-y: auto;
   max-height: 40rem;
   border-radius: 30px;
+  position: relative;
 `;
 
 const TodoListContainer = () => {

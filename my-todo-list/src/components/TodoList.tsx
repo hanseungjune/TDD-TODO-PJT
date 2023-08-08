@@ -10,6 +10,7 @@ import {
 import styled from "@emotion/styled";
 import { RootState } from "../app/store";
 
+
 const TodoInputStyle = styled.div`
   display: flex;
   flex-direction: column;
@@ -129,10 +130,9 @@ const TodoList = () => {
         headers: {
           "Content-Type": "application/json",
         },
-      }).then((res) => res.json()), // 응답을 JSON으로 파싱
+      }).then((res) => res.json()), 
     {
       onSuccess: (data: ToggleCompletedResponse) => {
-        // 타입을 지정
         dispatch(
           toggleCompleted({ todoId: data.todoId, completed: data.completed })
         );

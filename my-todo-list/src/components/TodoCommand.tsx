@@ -1,13 +1,14 @@
 import styled from "@emotion/styled";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../app/store";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import {
   addTodo,
   deleteTodo,
   setInputValue,
   updatedTodo,
 } from "../features/todoSlice";
+import Swal from "sweetalert2";
 
 const TodoCommandSectionStyle = styled.section`
   width: 99%;
@@ -66,6 +67,7 @@ interface Todo {
 }
 
 const TodoCommand = () => {
+  const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const todos = useSelector((state: RootState) => state.todos.todos);
   const inputValue = useSelector((state: RootState) => state.todos.inputValue);
@@ -140,6 +142,13 @@ const TodoCommand = () => {
     {
       onSuccess: (data) => {
         dispatch(updatedTodo(data));
+        Swal.fire({
+          icon: "success",
+          title: "수정 완료!",
+          text: "할 일이 성공적으로 수정되었습니다.",
+          confirmButtonText: "확인",
+        });
+        queryClient.invalidateQueries("todos");
       },
     }
   );
