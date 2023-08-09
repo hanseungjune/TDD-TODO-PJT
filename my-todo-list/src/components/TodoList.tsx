@@ -17,6 +17,7 @@ import {
   TodoStyle,
   TodoTitleStyle,
 } from "../style/TodoListS";
+import { TodoListStyle } from "../style/TodoListContainerS";
 
 type ToggleCompletedResponse = {
   todoId: number;
@@ -85,7 +86,7 @@ const TodoList = () => {
   if (error) return <div>Error...</div>;
 
   return (
-    <>
+    <TodoListStyle data-testid="todo-list">
       <TodoInputStyle>
         <input type="text" value={inputValue} onChange={handleChangeInput} />
       </TodoInputStyle>
@@ -112,7 +113,7 @@ const TodoList = () => {
           </TodoContentStyle>
         </TodoStyle>
       ))}
-    </>
+    </TodoListStyle>
   );
 };
 

@@ -8,8 +8,13 @@ import {
   updatedTodo,
 } from "../features/todoSlice";
 import Swal from "sweetalert2";
-import { TodoCommandCUDStyle, TodoCommandProfileImgStyle, TodoCommandProfileStyle, TodoCommandSectionStyle } from "../style/TodoCommandS";
-
+import {
+  TodoCommandCUDStyle,
+  TodoCommandProfileImgStyle,
+  TodoCommandProfileStyle,
+  TodoCommandSectionStyle,
+} from "../style/TodoCommandS";
+import { TodoListCommandStyle } from "../style/TodoListContainerS";
 
 interface Todo {
   id: number;
@@ -114,23 +119,25 @@ const TodoCommand = () => {
   };
 
   return (
-    <TodoCommandSectionStyle>
-      <TodoCommandProfileStyle>
-        <TodoCommandProfileImgStyle
-          src={"https://avatars.githubusercontent.com/u/92035406?v=4"}
-          alt={"profile"}
-        />
-      </TodoCommandProfileStyle>
-      <TodoCommandCUDStyle onClick={handleAddTodo}>
-        일정 추가
-      </TodoCommandCUDStyle>
-      <TodoCommandCUDStyle onClick={handleUpdateTodo}>
-        일정 수정
-      </TodoCommandCUDStyle>
-      <TodoCommandCUDStyle onClick={handleDeleteSelectedTodos}>
-        일정 취소
-      </TodoCommandCUDStyle>
-    </TodoCommandSectionStyle>
+    <TodoListCommandStyle data-testid="todo-command">
+      <TodoCommandSectionStyle>
+        <TodoCommandProfileStyle>
+          <TodoCommandProfileImgStyle
+            src={"https://avatars.githubusercontent.com/u/92035406?v=4"}
+            alt={"profile"}
+          />
+        </TodoCommandProfileStyle>
+        <TodoCommandCUDStyle onClick={handleAddTodo}>
+          일정 추가
+        </TodoCommandCUDStyle>
+        <TodoCommandCUDStyle onClick={handleUpdateTodo}>
+          일정 수정
+        </TodoCommandCUDStyle>
+        <TodoCommandCUDStyle onClick={handleDeleteSelectedTodos}>
+          일정 취소
+        </TodoCommandCUDStyle>
+      </TodoCommandSectionStyle>
+    </TodoListCommandStyle>
   );
 };
 

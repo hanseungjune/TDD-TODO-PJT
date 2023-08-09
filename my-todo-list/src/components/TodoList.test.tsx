@@ -3,7 +3,6 @@ import TodoList from "./TodoList";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
-import { act } from "react-dom/test-utils";
 import { configureStore } from "@reduxjs/toolkit";
 import { todoReducer } from "../features/todoSlice";
 
