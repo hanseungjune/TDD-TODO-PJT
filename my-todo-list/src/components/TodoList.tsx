@@ -52,9 +52,13 @@ const TodoList = () => {
   });
 
   const handleToggleSelectTodo = (id: number) => {
-    const selectedTodo = todos.find((todo) => todo.id === id);
-    if (selectedTodo) {
-      dispatch(setInputValue(selectedTodo.text));
+    if (selectedTodos.includes(id)) {
+      dispatch(setInputValue(""));
+    } else {
+      const selectedTodo = todos.find((todo) => todo.id === id);
+      if (selectedTodo) {
+        dispatch(setInputValue(selectedTodo.text));
+      } 
     }
     dispatch(toggleSelectTodo(id));
   };

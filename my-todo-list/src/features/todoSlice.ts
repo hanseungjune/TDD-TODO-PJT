@@ -46,7 +46,9 @@ export const todoReducer = createSlice({
     },
     toggleSelectTodo: (state, action: PayloadAction<number>) => {
       const id = action.payload;
-      if (state.selectedTodos.includes(id)) {
+      if (id === -1) {
+        state.selectedTodos = [];
+      } else if (state.selectedTodos.includes(id)) {
         state.selectedTodos = state.selectedTodos.filter(
           (todoId) => todoId !== id
         );

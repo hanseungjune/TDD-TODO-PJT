@@ -5,6 +5,7 @@ import {
   addTodo,
   deleteTodo,
   setInputValue,
+  toggleSelectTodo,
   updatedTodo,
 } from "../features/todoSlice";
 import Swal from "sweetalert2";
@@ -105,6 +106,7 @@ const TodoCommand = () => {
           text: "할 일이 성공적으로 수정되었습니다.",
           confirmButtonText: "확인",
         });
+        dispatch(toggleSelectTodo(-1));
         queryClient.invalidateQueries("todos");
       },
     }
