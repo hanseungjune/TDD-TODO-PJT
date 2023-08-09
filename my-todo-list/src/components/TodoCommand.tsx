@@ -107,6 +107,7 @@ const TodoCommand = () => {
           confirmButtonText: "확인",
         });
         dispatch(toggleSelectTodo(-1));
+        dispatch(setInputValue(""));
         queryClient.invalidateQueries("todos");
       },
     }
