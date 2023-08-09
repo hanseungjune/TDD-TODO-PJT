@@ -88,12 +88,13 @@ const TodoList = () => {
   return (
     <TodoListStyle data-testid="todo-list">
       <TodoInputStyle>
-        <input type="text" value={inputValue} onChange={handleChangeInput} />
+        <input type="text" data-testid="todo-updated" value={inputValue} onChange={handleChangeInput} />
       </TodoInputStyle>
       {data.map((todo: Todo) => (
         <TodoStyle
           key={todo.id}
           selected={selectedTodos.includes(todo.id)}
+          data-testid={`todo-list-${todo.id}`}
           onClick={() => handleToggleSelectTodo(todo.id)}
         >
           <TodoTitleStyle>

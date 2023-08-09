@@ -48,6 +48,7 @@ const TodoCommand = () => {
       onSuccess: (_, variables) => {
         variables.forEach((todoId: number) => {
           dispatch(deleteTodo(todoId));
+          queryClient.invalidateQueries("todos");
         });
       },
     }
