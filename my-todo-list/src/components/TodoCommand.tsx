@@ -75,6 +75,7 @@ const TodoCommand = () => {
       onSuccess: (data) => {
         dispatch(addTodo(data));
         dispatch(setInputValue(""));
+        queryClient.invalidateQueries("todos");
       },
     }
   );
