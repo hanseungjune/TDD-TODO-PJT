@@ -46,9 +46,14 @@ const TodoList = () => {
   const { data, isLoading, error } = useQuery("todos", async () => {
     const response = await fetch("/api/todos");
     if (!response.ok) throw new Error("Fetching todos failed");
-    const todos = await response.json();
-    dispatch(setTodos(todos));
-    return todos;
+    const responseText = await response.text();
+    try {
+      const todos = JSON.parse(responseText);
+      dispatch(setTodos(todos));
+      return todos;
+    } catch (e) {
+      throw new Error("Invalid JSON response");
+    }
   });
 
   const handleToggleSelectTodo = (id: number) => {
@@ -58,7 +63,7 @@ const TodoList = () => {
       const selectedTodo = todos.find((todo) => todo.id === id);
       if (selectedTodo) {
         dispatch(setInputValue(selectedTodo.text));
-      } 
+      }
     }
     dispatch(toggleSelectTodo(id));
   };
@@ -92,7 +97,13 @@ const TodoList = () => {
   return (
     <TodoListStyle data-testid="todo-list">
       <TodoInputStyle>
-        <input type="text" data-testid="todo-updated" placeholder="할 일을 입력하세요" value={inputValue} onChange={handleChangeInput} />
+        <input
+          type="text"
+          data-testid="todo-updated"
+          placeholder="할 일을 입력하세요"
+          value={inputValue}
+          onChange={handleChangeInput}
+        />
       </TodoInputStyle>
       {data.map((todo: Todo) => (
         <TodoStyle

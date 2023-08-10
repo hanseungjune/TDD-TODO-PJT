@@ -37,7 +37,7 @@ const TodoCommand = () => {
     (todoIds: number[]) =>
       Promise.all(
         todoIds.map((id) =>
-          fetch(`api/todos/${id}`, {
+          fetch(`/api/todos/${id}`, {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const TodoCommand = () => {
 
   const mutation = useMutation(
     async (newTodo: Todo) => {
-      const response = await fetch("api/todos", {
+      const response = await fetch("/api/todos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +75,6 @@ const TodoCommand = () => {
       onSuccess: (data) => {
         dispatch(addTodo(data));
         dispatch(setInputValue(""));
-        
       },
     }
   );
@@ -94,7 +93,7 @@ const TodoCommand = () => {
 
   const updateTodoMutation = useMutation(
     (updatedTodo: Todo) =>
-      fetch(`api/todos/${updatedTodo.id}`, {
+      fetch(`/api/todos/${updatedTodo.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
