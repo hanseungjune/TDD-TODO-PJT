@@ -75,11 +75,15 @@ const TodoCommand = () => {
       onSuccess: (data) => {
         dispatch(addTodo(data));
         dispatch(setInputValue(""));
+        
       },
     }
   );
 
   const handleAddTodo = () => {
+    if (!inputValue.trim()) {
+      return;
+    }
     const newTodo = {
       id: todos.length,
       text: inputValue,

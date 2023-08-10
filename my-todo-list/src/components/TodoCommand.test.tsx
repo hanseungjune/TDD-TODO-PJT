@@ -32,24 +32,30 @@ test("일정 추가 버튼 클릭 시 동작", async () => {
     <Provider store={mockStore}>
       <QueryClientProvider client={queryClient}>
         <TodoCommand />
+        <TodoList />
       </QueryClientProvider>
     </Provider>
   );
-  expect(mockStore.getState().todos.todos.length).toBe(0);
-  const addButton = screen.getByText("일정 추가");
-  fireEvent.click(addButton);
+
   await waitFor(() => {
-    expect(mockStore.getState().todos.todos.length).toBe(1);
+    expect(mockStore.getState().todos.todos.length).toBe(6);
+  });
+
+  const inputElement = await waitFor(() =>
+    screen.getByPlaceholderText("할 일을 입력하세요")
+  );
+
+  fireEvent.change(inputElement, { target: { value: "새로운 할 일" } });
+
+  const addButton = await waitFor(() => screen.getByText("일정 추가"));
+  fireEvent.click(addButton);
+
+  await waitFor(() => {
+    expect(mockStore.getState().todos.todos.length).toBe(7);
   });
 });
 
 test("일정 수정 버튼 클릭 시 동작", async () => {
-  const mockStore = configureStore({
-    reducer: {
-      todos: todoReducer.reducer,
-    },
-  });
-
   render(
     <Provider store={mockStore}>
       <QueryClientProvider client={queryClient}>

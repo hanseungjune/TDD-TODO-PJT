@@ -1,46 +1,73 @@
-# Getting Started with Create React App
+# 😀 ToyPJT - TDD(Test-Driven-Development) 방법론 - todoList PJT
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<br/>
 
-## Available Scripts
+## 🗓️ 기간
 
-In the project directory, you can run:
+- 2023년 8월 7일 ~ 2023년 8월 10일
+  
+<br/>
 
-### `npm start`
+## 🧭 목적
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- TypeScript & Redux-toolkit 사용해보기
+- React-Query를 통해서 CRUD 요청해보기
+- MSW를 통해서 백엔드 목업 로직 구현하기
+- `npm test`를 통해서 각 컴포넌트 테스트를 통해서 TDD 개발하기
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<br/>
 
-### `npm test`
+## ✅ Task
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### ❗구현 사항
 
-### `npm run build`
+- ⭕ TypeScript & Redux-toolkit 사용해보기
+- ⭕ React-Query를 통해서 CRUD 요청해보기
+- ⭕ MSW를 통해서 백엔드 목업 로직 구현하기
+- ⭕ `npm test`를 통해서 각 컴포넌트 테스트를 통해서 TDD 개발하기
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<br/>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 💡 진행방식
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1.  컨벤션을 지정하여 [위키](https://github.com/hanseungjune/pre-onboarding-11th-3-3/wiki/Editing--Convention)에 정리해 두었습니다.
 
-### `npm run eject`
+2.  구현을 우선순위로하고, 트러블 슈팅이나 리팩토링 할 부분이 있다면, 추가적으로 진행할 예정입니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<br/>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🎖️ Members
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<table border>
+  <tbody>
+    <tr>
+      <td align="center" width="200px">
+        <img width="100%" src="https://avatars.githubusercontent.com/u/92035406?v=4"  alt=""/>
+        FE.<br/>
+        <a href="https://github.com/hanseungjune">
+          <img src="https://img.shields.io/badge/한승준-000000?style=flat-round&logo=GitHub&logoColor=white"/>
+        </a>
+      </td>
+     </tr>
+  </tbody>
+</table>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<br/>
 
-## Learn More
+## 🛠️ Stacks
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![react](https://user-images.githubusercontent.com/123078739/234895132-18ab503a-fcc7-486d-b89a-cb0cc1f7796b.svg) 
+![typescript](https://user-images.githubusercontent.com/123078739/234895162-42f905c6-765d-44d2-bcb1-b011286ef6b2.svg)
+![redux](https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+![reactquery](https://img.shields.io/badge/react_query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white)
+![msw](https://img.shields.io/badge/msw-9A8555?style=for-the-badge&logo=msi&logoColor=white)
+![Emotion.js](https://img.shields.io/badge/Emotion.js-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<br/>
+
+### 📍 기능
+
+- todoList 목록 가져오기
+- todoList 목록 추가하기
+- todoList 삭제하기(다중 가능)
+- todoList 수정하기(다중 선택 가능, 하지만 제일 앞에 있는 것만 수정)

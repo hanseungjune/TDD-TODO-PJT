@@ -86,13 +86,13 @@ const TodoList = () => {
     toggleCompletedMutation.mutate({ todoId, completed });
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error...</div>;
+  if (isLoading) return <TodoListStyle>Loading...</TodoListStyle>;
+  if (error) return <TodoListStyle>Error...</TodoListStyle>;
 
   return (
     <TodoListStyle data-testid="todo-list">
       <TodoInputStyle>
-        <input type="text" data-testid="todo-updated" value={inputValue} onChange={handleChangeInput} />
+        <input type="text" data-testid="todo-updated" placeholder="할 일을 입력하세요" value={inputValue} onChange={handleChangeInput} />
       </TodoInputStyle>
       {data.map((todo: Todo) => (
         <TodoStyle
